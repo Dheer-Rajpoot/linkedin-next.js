@@ -8,6 +8,7 @@ import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import TopicCTA from "../components/TopicCTA";
 import Head from "next/head";
 import { getProviders, signIn } from "next-auth/react";
+import Link from "next/link";
 
 function home({ providers }) {
   return (
@@ -18,7 +19,11 @@ function home({ providers }) {
       </Head>
       <header className="flex justify-around items-center py-4">
         <div className="relative w-36 h-10">
-          <Image src="/LI-Logo.svg" layout="fill" objectFit="contain" />
+          <Link href="/">
+            <div className="hover:cursor-pointer">
+              <Image src="/LI-Logo.svg" layout="fill" objectFit="contain" />
+            </div>
+          </Link>
         </div>
         <div className="flex items-center sm:divide-x divide-gray-300">
           <div className="hidden sm:flex space-x-8 pr-4">
