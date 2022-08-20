@@ -7,8 +7,9 @@ import OndemandVideoSharpIcon from "@mui/icons-material/OndemandVideoSharp";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import TopicCTA from "../components/TopicCTA";
 import Head from "next/head";
+import { getProviders, signIn } from "next-auth/react";
 
-function home() {
+function home({ providers }) {
   return (
     <div className="space-y-10 relative">
       <Head>
@@ -26,14 +27,16 @@ function home() {
             <HeaderLink Icon={OndemandVideoSharpIcon} text="Learning" />
             <HeaderLink Icon={BusinessCenterIcon} text="Jobs" />
           </div>
-          <div className="pl-4">
-            <button
-              className="text-blue-700 font-semibold rounded-full border border-blue-700 px-5 py-1.5 transition-all hover:border-2"
-              onClick={() => signIn(provider.id, { callbackUrl: "/" })}
-            >
-              Sign in
-            </button>
-          </div>
+          {Object.values(providers).map((provider) => (
+            <div className="pl-4" key={provider.name}>
+              <button
+                className="text-blue-700 font-semibold rounded-full border border-blue-700 px-5 py-1.5 transition-all hover:border-2"
+                onClick={() => signIn(provider.id, { callbackUrl: "/" })}
+              >
+                Sign in
+              </button>
+            </div>
+          ))}
         </div>
       </header>
       <main className="flex flex-col xl:flex-row items-center max-w-screen-lg mx-auto">
@@ -56,3 +59,13 @@ function home() {
 }
 
 export default home;
+
+export async function getServerSideProps() {
+  const providers = await getProviders();
+
+  return {
+    props: {
+      providers,
+    },
+  };
+}

@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-
+import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+import clientPromise from "../../../lib/mongodb";
 export default NextAuth({
   // Configure one or more authentication providers
   providers: [
@@ -10,4 +11,13 @@ export default NextAuth({
     }),
     // ...add more providers here
   ],
+  secret: process.env.JWT_SECRET,
+  adapter: MongoDBAdapter(clientPromise),
+  pages: {
+    signIn: "/home",
+  },
+  session: {
+    strategy: "jwt",
+  },
+  debug: true,
 });
